@@ -1,26 +1,34 @@
 <template>
-  <div>
-    <h1>Team Randomizer Machine</h1>
-    <p>(ctrl+t for new team, ctrl+r to run, arrows to select members / teams, press any key to add new member and enter when finnished)</p>
-    <div v-for="(team, index) in teams" :key="index">
-      <h2>Team {{ index }}</h2>
+<div>
+    <RndTeam
+      v-for="(team, index) in teams" 
+      :key="index"
+      :name="team.name">
       <draggable
-        v-model="teams[index]"
-        group="people"
+        v-model="teams[index].members"
+        group="teamMembers"
         @start="drag = true"
         @end="drag = false"
       >
-        <div v-for="name in team" :key="name">{{ name }}</div>
+        <RndTeammate
+          v-for="(person, teammateIndex) in teams[index].members" 
+          :key="teammateIndex" 
+          :name="person.name" 
+          :locked="person.locked" />
       </draggable>
-    </div>
+    </RndTeam>
     <hr />
     <draggable
-        v-model="bench"
-        group="people"
+        v-model="bench.members"
+        group="teamMembers"
         @start="drag = true"
         @end="drag = false"
       >
-        <div v-for="name in bench" :key="name">{{ name }}</div>
+        <RndTeammate 
+          v-for="(person, index) in bench.members" 
+          :key="index" 
+          :name="person.name" 
+          :locked="person.locked" />
       </draggable>
   </div>
 </template>
@@ -28,15 +36,47 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import draggable from "vuedraggable";
+import RndTeammate from "../components/RndTeammate.vue";
+import RndTeam from "../components/RndTeam.vue";
+
 
 @Component({
   components: {
     draggable,
+    RndTeammate,
+    RndTeam
   },
 })
 export default class Generator extends Vue {
-  teams: string[][] = [["aaa", "bbb", "ccc"], ["ddd"]];
-  bench: string[] = ['rr', 'ss'];
-  drag = false;
+  teams: Group[] = [{
+    name: 'Team Teapot',
+    members: [
+      {name: 'Max', locked: false}, 
+      {name: 'Hatt', locked: false},
+      {name: 'Mössa', locked: false}]
+  },
+  {
+    name: 'Team Trunk',
+    members: [
+      {name: 'Asdf', locked: false}, 
+      {name: 'Gg', locked: false},
+      {name: 'Jklö', locked: false}]
+  }];
+
+  bench: Group = {
+    name: 'aaa',
+    members:[{name: 'aaa', locked: false}, {name: 'bbb', locked: false},] 
+  };
 }
+
+interface Person {
+  name: string;
+  locked: boolean;
+}
+
+interface Group {
+  name: string;
+  members: Person[];
+}
+
 </script>
