@@ -4,7 +4,7 @@
       <h3 class="title" contenteditable="true" @blur="onNameChange">
         {{ name }}
       </h3>
-      <button class="remove-btn" @click="onRemove">Remove</button>
+      <button class="remove-btn" @click="onRemove">Remove team</button>
     </header>
     <slot />
   </section>

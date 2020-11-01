@@ -1,6 +1,45 @@
 <template>
   <main>
     <section>
+      <header class="teammate-header">
+        <h2 class="teammate-header--header">Teams</h2>
+        <input
+          class="input-name"
+          type="text"
+          placeholder="Team Name"
+          v-model="newTeamName"
+          id="name"
+          name="name"
+          required
+          minlength="1"
+          size="15"
+          @keypress.enter.stop.prevent="onNewTeam"
+        />
+        <button @click.stop.prevent="onNewTeam">Add</button>
+      </header>
+
+      <RndTeam
+        v-for="(team, index) in teams"
+        :key="index"
+        v-model="team.name"
+        @remove="onRemoveTeam(index)"
+      >
+        <draggable
+          v-model="team.members"
+          group="teamMembers"
+          @start="drag = true"
+          @end="drag = false"
+        >
+          <RndTeammate
+            v-for="(person, teammateIndex) in team.members"
+            :key="teammateIndex"
+            v-model="team.members[teammateIndex]"
+            @remove="onRemoveTeammateFromTeam(index, teammateIndex)"
+          />
+        </draggable>
+      </RndTeam>
+    </section>
+    <section>
       <button @click="randomize" class="randomize-btn">Randomize</button>
     </section>
 
@@ -39,48 +78,6 @@
         <div v-if="!bench.length">No unassigned teammembers</div>
       </div>
     </section>
-
-    <section>
-      <header class="teammate-header">
-        <h2 class="teammate-header--header">Teams</h2>
-        <input
-          class="input-name"
-          type="text"
-          placeholder="Team Name"
-          v-model="newTeamName"
-          id="name"
-          name="name"
-          required
-          minlength="1"
-          size="15"
-          @keypress.enter.stop.prevent="onNewTeam"
-        />
-        <button @click.stop.prevent="onNewTeam">Add</button>
-      </header>
-
-      <RndTeam
-        v-for="(team, index) in teams"
-        :key="index"
-        v-model="team.name"
-        @remove="onRemoveTeam(index)"
-      >
-        <draggable
-          v-model="team.members"
-          group="teamMembers"
-          @start="drag = true"
-          @end="drag = false"
-        >
-          <RndTeammate
-            v-for="(person, teammateIndex) in team.members"
-            :key="teammateIndex"
-            v-model="team.members[teammateIndex]"
-            @remove="onRemoveTeammateFromTeam(index, teammateIndex)"
-          />
-        </draggable>
-      </RndTeam>
-
-    </section>
-
   </main>
 </template>
 
