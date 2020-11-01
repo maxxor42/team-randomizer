@@ -65,7 +65,7 @@ export default class GroupMixin extends Vue {
         let membersPerTeam = 0;
         let remainder = 0;
 
-        if (!this.teams)
+        if (!this.teams.length)
             return;
 
         this.teams.forEach((team: Group) => {
