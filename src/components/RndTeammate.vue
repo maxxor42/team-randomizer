@@ -2,7 +2,8 @@
   <div>
     <div class="teammate"
     contenteditable="true"
-    ref="name">
+    ref="name"
+    @blur="onChange">
       {{ teammate.name }}
     </div>
     <input

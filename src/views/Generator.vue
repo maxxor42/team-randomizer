@@ -20,13 +20,12 @@
         v-for="(team, index) in teams" 
         :key="index" 
         v-model="team.name"
-        @remove="removeTeam(index)">
+        @remove="onRemoveTeam(index)">
         <draggable
           v-model="team.members"
           group="teamMembers"
           @start="drag = true"
           @end="drag = false">
-        >
           <RndTeammate
             v-for="(person, teammateIndex) in team.members"
             :key="teammateIndex"
@@ -60,19 +59,18 @@
         v-for="(member, index) in bench"
         :key="index"
         v-model="bench[index]"
-        @remove="removeTeammateFromBench(index)"
+        @remove="onRemoveTeammateFromBench(index)"
       />
     </draggable>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Mixins, Watch } from "vue-property-decorator";
 import draggable from "vuedraggable";
 import RndTeammate from "../components/RndTeammate.vue";
 import RndTeam from "../components/RndTeam.vue";
-import { Teammate } from "../models/teammate";
-import { Group } from "../models/group";
+import GroupMixin from "../mixins/group-mixin";
 
 @Component({
   components: {
@@ -81,114 +79,42 @@ import { Group } from "../models/group";
     RndTeam,
   },
 })
-export default class Generator extends Vue {
+export default class Generator extends Mixins(GroupMixin) {
   newTeamName = "";
   newTeammateName = "";
 
-  teams: Group[] = [
-    {
-      name: "Team Teapot",
-      members: [
-        { name: "Max", locked: false },
-        { name: "Hatt", locked: false },
-        { name: "Mössa", locked: false },
-      ],
-    },
-    {
-      name: "Team Trunk",
-      members: [
-        { name: "Asdf", locked: false },
-        { name: "Gg", locked: false },
-        { name: "Jklö", locked: false },
-      ],
-    },
-  ];
-
-  bench: Teammate[] = [
-    { name: "aaa", locked: false },
-    { name: "bbb", locked: false },
-  ];
-
   onNewTeammate(): void {
     if (this.newTeammateName)
-      this.bench.push({
-        name: this.newTeammateName,
-        locked: false,
-      });
+      this.addTeammate(this.newTeammateName);
     this.newTeammateName = "";
   }
 
   onNewTeam(): void {
     if (this.newTeamName)
-      this.teams.push({
-        name: this.newTeamName,
-        members: [],
-      });
+      this.addTeam(this.newTeamName);
     this.newTeamName = "";
   }
 
-  removeTeam(index: number) {
-    this.bench = this.bench.concat(this.teams[index].members);
-    this.teams.splice(index, 1);
+  onRemoveTeam(index: number): void {
+    this.removeTeam(index);
   }
 
-  removeTeammateFromTeam(teamIndex: number, teammateIndex: number) {
-    this.teams[teamIndex].members.splice(teammateIndex, 1);
+  onRemoveTeammateFromBench(index: number) {
+    this.removeTeammateFromBench(index);
   }
 
-  removeTeammateFromBench(index: number) {
-    this.bench.splice(index, 1);
+  @Watch('teams', { deep: true })
+  onTeamsChange(): void {
+    this.storeTeams();
   }
 
-  randomize(): void {
-    let teammatesToRandomize: Teammate[] = [];
-
-    let teammatesTotal = 0;
-
-    if (!this.teams) return;
-
-    this.teams.forEach((team: Group) => {
-      teammatesToRandomize = teammatesToRandomize.concat(
-        team.members.filter((teammate: Teammate) => !teammate.locked)
-      );
-
-      team.members = team.members.filter(
-        (teammate: Teammate) => teammate.locked
-      );
-
-      teammatesTotal += team.members.length;
-    });
-
-    teammatesToRandomize = teammatesToRandomize.concat(
-      this.bench.filter((teammate: Teammate) => !teammate.locked)
-    );
-
-    this.bench = this.bench.filter((teammate: Teammate) => teammate.locked);
-
-    teammatesTotal += teammatesToRandomize.length;
-
-    const membersPerTeam = Math.floor(teammatesTotal / this.teams.length);
-
-    let remainder = teammatesTotal % this.teams.length;
-
-    const randomizedTeammates = teammatesToRandomize
-      .map((a) => ({ sort: Math.random(), value: a }))
-      .sort((a, b) => a.sort - b.sort)
-      .map((a) => a.value);
-
-    this.teams.forEach((team: Group) => {
-      let nrMembersNeaded = membersPerTeam - team.members.length;
-
-      if (remainder) {
-        nrMembersNeaded++;
-        remainder--;
-      }
-
-      team.members = team.members.concat(
-        randomizedTeammates.splice(0, nrMembersNeaded)
-      );
-    });
-
+  @Watch('bench', { deep: true })
+  onBenchChange(): void {
+    this.storeBench();
+  }
+  
+  created(): void {
+    this.fetchFromLocalStorage();
   }
 }
 </script>
