@@ -1,11 +1,11 @@
 <template>
   <section class="team">
-    <h2 class="title" 
-        contenteditable="true" 
-        @blur="onNameChange">
-      {{ name }}
-    </h2>
-    <button @click="onRemove">Remove</button>
+    <header>
+      <h3 class="title" contenteditable="true" @blur="onNameChange">
+        {{ name }}
+      </h3>
+      <button class="remove-btn" @click="onRemove">Remove</button>
+    </header>
     <slot />
   </section>
 </template>
@@ -28,18 +28,35 @@ export default class RndTeam extends Vue {
   }
 
   onRemove() {
-    this.$emit('remove');
+    this.$emit("remove");
   }
 }
 </script>
 
 <style scoped lang="scss">
 .team {
-  border: 1px dotted grey;
-  padding: 16px;
+  background-color: coral;
+  padding: 8px;
+  margin: 8px 0;
 }
 
 .title {
   font-size: 1.5em;
+}
+
+h3 {
+  flex-basis: 100%;
+}
+
+header {
+  display: flex;
+}
+
+.remove-btn {
+  background-color: lightslategrey;
+  color: yellow;
+  cursor: pointer;
+  border: 0;
+  outline: 0;
 }
 </style>

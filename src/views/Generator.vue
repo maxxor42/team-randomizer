@@ -1,68 +1,87 @@
 <template>
-  <div>
-    <button @click="randomize">Randomize</button>
-    <form>
-      <label for="teamName">Add team</label>
-      <input
-        type="text"
-        v-model="newTeamName"
-        id="teamName"
-        name="teamName"
-        required
-        minlength="1"
-        size="10"
-        @keypress.enter.stop.prevent="onNewTeam"
-      />
-      <button @click.stop.prevent="onNewTeam">Add</button>
-    </form>
-    <div class="teams">
-      <RndTeam 
-        v-for="(team, index) in teams" 
-        :key="index" 
+  <main>
+    <section>
+      <button @click="randomize" class="randomize-btn">Randomize</button>
+    </section>
+
+    <section class="teammates">
+      <header class="teammate-header">
+        <h2 class="teammate-header--header">Unassigned Teammates</h2>
+        <input
+          class="input-name"
+          type="text"
+          placeholder="Name"
+          v-model="newTeammateName"
+          id="name"
+          name="name"
+          required
+          minlength="1"
+          size="15"
+          @keypress.enter.stop.prevent="onNewTeammate"
+        />
+        <button @click.stop.prevent="onNewTeammate">Add</button>
+      </header>
+
+      <div class="unassigned">
+        <draggable
+          v-model="bench"
+          group="teamMembers"
+          @start="drag = true"
+          @end="drag = false"
+        >
+          <RndTeammate
+            v-for="(member, index) in bench"
+            :key="index"
+            v-model="bench[index]"
+            @remove="onRemoveTeammateFromBench(index)"
+          />
+        </draggable>
+        <div v-if="!bench.length">No unassigned teammembers</div>
+      </div>
+    </section>
+
+    <section>
+      <header class="teammate-header">
+        <h2 class="teammate-header--header">Teams</h2>
+        <input
+          class="input-name"
+          type="text"
+          placeholder="Team Name"
+          v-model="newTeamName"
+          id="name"
+          name="name"
+          required
+          minlength="1"
+          size="15"
+          @keypress.enter.stop.prevent="onNewTeam"
+        />
+        <button @click.stop.prevent="onNewTeam">Add</button>
+      </header>
+
+      <RndTeam
+        v-for="(team, index) in teams"
+        :key="index"
         v-model="team.name"
-        @remove="onRemoveTeam(index)">
+        @remove="onRemoveTeam(index)"
+      >
         <draggable
           v-model="team.members"
           group="teamMembers"
           @start="drag = true"
-          @end="drag = false">
+          @end="drag = false"
+        >
           <RndTeammate
             v-for="(person, teammateIndex) in team.members"
             :key="teammateIndex"
             v-model="team.members[teammateIndex]"
+            @remove="onRemoveTeammateFromTeam(index, teammateIndex)"
           />
         </draggable>
       </RndTeam>
-    </div>
-    <hr />
-    <form>
-      <label for="name">Add teammate</label>
-      <input
-        type="text"
-        v-model="newTeammateName"
-        id="name"
-        name="name"
-        required
-        minlength="1"
-        size="10"
-        @keypress.enter.stop.prevent="onNewTeammate"
-      />
-      <button @click.stop.prevent="onNewTeammate">Add</button>
-    </form>
-    <draggable
-      v-model="bench"
-      group="teamMembers"
-      @start="drag = true"
-      @end="drag = false"
-    >
-      <RndTeammate
-        v-for="(member, index) in bench"
-        :key="index"
-        v-model="bench[index]"
-        @remove="onRemoveTeammateFromBench(index)"
-      />
-    </draggable>
-  </div>
+
+    </section>
+
+  </main>
 </template>
 
 <script lang="ts">
@@ -84,14 +103,12 @@ export default class Generator extends Mixins(GroupMixin) {
   newTeammateName = "";
 
   onNewTeammate(): void {
-    if (this.newTeammateName)
-      this.addTeammate(this.newTeammateName);
+    if (this.newTeammateName) this.addTeammate(this.newTeammateName);
     this.newTeammateName = "";
   }
 
   onNewTeam(): void {
-    if (this.newTeamName)
-      this.addTeam(this.newTeamName);
+    if (this.newTeamName) this.addTeam(this.newTeamName);
     this.newTeamName = "";
   }
 
@@ -99,20 +116,24 @@ export default class Generator extends Mixins(GroupMixin) {
     this.removeTeam(index);
   }
 
+  onRemoveTeammateFromTeam(team: number, teamate: number) {
+    this.removeTeammateFromTeam(team, teamate);
+  }
+
   onRemoveTeammateFromBench(index: number) {
     this.removeTeammateFromBench(index);
   }
 
-  @Watch('teams', { deep: true })
+  @Watch("teams", { deep: true })
   onTeamsChange(): void {
     this.storeTeams();
   }
 
-  @Watch('bench', { deep: true })
+  @Watch("bench", { deep: true })
   onBenchChange(): void {
     this.storeBench();
   }
-  
+
   created(): void {
     this.fetchFromLocalStorage();
   }
@@ -120,9 +141,59 @@ export default class Generator extends Mixins(GroupMixin) {
 </script>
 
 <style scoped lang="scss">
-.teams {
+button {
+  background-color: goldenrod;
+  border: 0;
+  margin: 4px 0;
+  height: 2em;
+  font-size: 3em;
+  border-radius: 2px;
+  box-shadow: 1px 1px 2px black;
+  cursor: pointer;
+}
+
+button:focus {
+  border: 0;
+  outline: 0;
+}
+
+button:active {
+  background-color: black;
+  color: goldenrod;
+  box-shadow: unset;
+}
+
+.input-name {
+  font-size: 2em;
+  outline: 0;
+  border: 0;
+  background-color: gold;
+  margin: 4px;
+  padding: 8px;
+}
+
+main {
+  text-align: left;
+}
+
+.teammate-header {
   display: flex;
-  align-items: top;
-  justify-content: space-around;
+}
+
+.randomize-btn {
+  width: 100%;
+}
+
+h2 {
+  flex-basis: 100%;
+  font-weight: unset;
+  font-size: 3em;
+  line-height: 2em;
+  margin: 0;
+  padding: 0;
+}
+
+section {
+  margin-bottom: 32px;
 }
 </style>

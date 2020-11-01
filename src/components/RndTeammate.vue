@@ -1,18 +1,20 @@
 <template>
-  <div>
-    <div class="teammate"
-    contenteditable="true"
+  <div :class="['teammate', {'locked': teammate.locked}]">
+    <span class="name"
     ref="name"
     @blur="onChange">
       {{ teammate.name }}
+    </span>
+    <div class="buttons">
+    <button
+      v-if="teammate.locked"
+      @click="toggleLocked(false)">Unlock</button>
+        <button
+      v-else
+      @click="toggleLocked(true)">Lock</button>
+
+    <button @click="remove">Remove</button>
     </div>
-    <input
-      type="checkbox"
-      v-bind:checked="teammate.locked"
-      @change="onChange"
-      ref="checkbox"
-    />
-    <button @click="onRemove">Remove</button>
   </div>
 </template>
 
@@ -32,17 +34,47 @@ export default class RndTeammate extends Vue {
   onChange(): void {
     this.$emit("teammateChange", {
       name: (this.$refs.name as HTMLElement).innerHTML,
-      locked: (this.$refs.checkbox as any).checked,
+      locked: this.teammate.locked,
     });
   }
-  onRemove(): void {
+  remove(): void {
     this.$emit("remove");
+  }
+
+  toggleLocked(locked: boolean) {
+    this.$emit("teammateChange", {
+      name: this.teammate.name,
+      locked
+    });
   }
 }
 </script>
 
 <style scoped lang="scss">
 .teammate {
-  text-align: left;
+  background: lightgoldenrodyellow;
+  margin: 4px;
+  padding: 4px;
+  display: inline-block;
+  cursor: move;
+}
+
+.locked {
+  background: lightsalmon ;
+}
+
+.name {
+  font-size: 2em;
+}
+
+button {
+  cursor: pointer;
+  border: 0;
+  background-color: unset;
+  display: block;
+}
+
+.buttons {
+  display: inline-block;
 }
 </style>
