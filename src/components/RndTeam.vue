@@ -1,12 +1,14 @@
 <template>
-  <section class="team">
-    <header>
-      <h3 class="title" contenteditable="true" @blur="onNameChange">
+  <section class="box has-background-primary-dark">
+    <header class="level">
+      <h3 class="title level-left" contenteditable="true" @blur="onNameChange">
         {{ name }}
       </h3>
-      <button class="remove-btn" @click="onRemove">Remove team</button>
+      <div class="level-right">
+      <button class="button" @click="onRemove">Remove team</button>
+      </div>
     </header>
-    <slot />
+      <slot />
   </section>
 </template>
 
@@ -34,29 +36,5 @@ export default class RndTeam extends Vue {
 </script>
 
 <style scoped lang="scss">
-.team {
-  background-color: coral;
-  padding: 8px;
-  margin: 8px 0;
-}
 
-.title {
-  font-size: 1.5em;
-}
-
-h3 {
-  flex-basis: 100%;
-}
-
-header {
-  display: flex;
-}
-
-.remove-btn {
-  background-color: lightslategrey;
-  color: yellow;
-  cursor: pointer;
-  border: 0;
-  outline: 0;
-}
 </style>

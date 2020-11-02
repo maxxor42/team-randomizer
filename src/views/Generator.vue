@@ -1,22 +1,36 @@
 <template>
-  <main>
-    <section>
-      <header class="teammate-header">
-        <h2 class="teammate-header--header">Teams</h2>
-        <input
-          class="input-name"
-          type="text"
-          placeholder="Team Name"
-          v-model="newTeamName"
-          id="name"
-          name="name"
-          required
-          minlength="1"
-          size="15"
-          @keypress.enter.stop.prevent="onNewTeam"
-        />
-        <button @click.stop.prevent="onNewTeam">Add</button>
+  <main class="p-4">
+    <section class="container">
+      <header class="level">
+        <h2 class="title level-left">Teams</h2>
+        <div class="level-right">
+          <div class="level-item">
+            <div class="field has-addons">
+              <p class="control">
+                <input
+                  class="input"
+                  type="text"
+                  placeholder="Team Name"
+                  v-model="newTeamName"
+                  id="name"
+                  name="name"
+                  required
+                  minlength="1"
+                  size="15"
+                  @keypress.enter.stop.prevent="onNewTeam"
+                />
+              </p>
+              <p class="control">
+                <button class="button" @click.stop.prevent="onNewTeam">
+                  Add
+                </button>
+              </p>
+            </div>
+          </div>
+        </div>
       </header>
+
+
 
       <RndTeam
         v-for="(team, index) in teams"
@@ -27,6 +41,7 @@
         <draggable
           v-model="team.members"
           group="teamMembers"
+          class="field is-grouped is-grouped-multiline"
           @start="drag = true"
           @end="drag = false"
         >
@@ -39,32 +54,46 @@
         </draggable>
       </RndTeam>
     </section>
-    <section>
-      <button @click="randomize" class="randomize-btn">Randomize</button>
+
+    <section  class="container mt-6">
+      <button @click="randomize" class="button is-danger is-large is-fullwidth">Randomize</button>
     </section>
 
-    <section class="teammates">
-      <header class="teammate-header">
-        <h2 class="teammate-header--header">Unassigned Teammates</h2>
-        <input
-          class="input-name"
-          type="text"
-          placeholder="Name"
-          v-model="newTeammateName"
-          id="name"
-          name="name"
-          required
-          minlength="1"
-          size="15"
-          @keypress.enter.stop.prevent="onNewTeammate"
-        />
-        <button @click.stop.prevent="onNewTeammate">Add</button>
+    <section class="container mt-6">
+            <header class="level">
+        <h2 class="title level-left">Unassigned teammates</h2>
+        <div class="level-right">
+          <div class="level-item">
+            <div class="field has-addons">
+              <p class="control">
+                <input
+                  class="input"
+                  type="text"
+                  placeholder="Name"
+                  v-model="newTeammateName"
+                  id="name"
+                  name="name"
+                  required
+                  minlength="1"
+                  size="15"
+                  @keypress.enter.stop.prevent="onNewTeammate"
+                />
+              </p>
+              <p class="control">
+                <button class="button" @click.stop.prevent="onNewTeammate">
+                  Add
+                </button>
+              </p>
+            </div>
+          </div>
+        </div>
       </header>
 
-      <div class="unassigned">
+      <div>
         <draggable
           v-model="bench"
           group="teamMembers"
+          class="field is-grouped is-grouped-multiline"
           @start="drag = true"
           @end="drag = false"
         >
@@ -75,7 +104,9 @@
             @remove="onRemoveTeammateFromBench(index)"
           />
         </draggable>
-        <div v-if="!bench.length">No unassigned teammembers</div>
+        <div v-if="!bench.length" class="notification">
+          <p>No unassigned teammembers</p>
+        </div>
       </div>
     </section>
   </main>
@@ -136,61 +167,3 @@ export default class Generator extends Mixins(GroupMixin) {
   }
 }
 </script>
-
-<style scoped lang="scss">
-button {
-  background-color: goldenrod;
-  border: 0;
-  margin: 4px 0;
-  height: 2em;
-  font-size: 3em;
-  border-radius: 2px;
-  box-shadow: 1px 1px 2px black;
-  cursor: pointer;
-}
-
-button:focus {
-  border: 0;
-  outline: 0;
-}
-
-button:active {
-  background-color: black;
-  color: goldenrod;
-  box-shadow: unset;
-}
-
-.input-name {
-  font-size: 2em;
-  outline: 0;
-  border: 0;
-  background-color: gold;
-  margin: 4px;
-  padding: 8px;
-}
-
-main {
-  text-align: left;
-}
-
-.teammate-header {
-  display: flex;
-}
-
-.randomize-btn {
-  width: 100%;
-}
-
-h2 {
-  flex-basis: 100%;
-  font-weight: unset;
-  font-size: 3em;
-  line-height: 2em;
-  margin: 0;
-  padding: 0;
-}
-
-section {
-  margin-bottom: 32px;
-}
-</style>

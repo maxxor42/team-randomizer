@@ -1,19 +1,13 @@
 <template>
-  <div :class="['teammate', {'locked': teammate.locked}]">
-    <span class="name"
-    ref="name"
-    @blur="onChange">
-      {{ teammate.name }}
-    </span>
-    <div class="buttons">
-    <button
-      v-if="teammate.locked"
-      @click="toggleLocked(false)">Unlock</button>
-        <button
-      v-else
-      @click="toggleLocked(true)">Lock</button>
+  <div class="control">
+    <div class="tags are-large has-addons">
+      <span class="tag is-primary movable">
+        {{ teammate.name }}
+        <button @click="remove" class="delete ml-4"></button>
+      </span>
+      <button v-if="teammate.locked" @click="toggleLocked(false)" class="button tag is-dark">unlock</button>
+      <button v-else @click="toggleLocked(true)" class="button tag is-light">lock</button>
 
-    <button @click="remove">Remove</button>
     </div>
   </div>
 </template>
@@ -44,37 +38,14 @@ export default class RndTeammate extends Vue {
   toggleLocked(locked: boolean) {
     this.$emit("teammateChange", {
       name: this.teammate.name,
-      locked
+      locked,
     });
   }
 }
 </script>
 
 <style scoped lang="scss">
-.teammate {
-  background: lightgoldenrodyellow;
-  margin: 4px;
-  padding: 4px;
-  display: inline-block;
-  cursor: move;
-}
-
-.locked {
-  background: lightsalmon ;
-}
-
-.name {
-  font-size: 2em;
-}
-
-button {
-  cursor: pointer;
-  border: 0;
-  background-color: unset;
-  display: block;
-}
-
-.buttons {
-  display: inline-block;
-}
+  .movable {
+    cursor: move;
+  }
 </style>
