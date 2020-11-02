@@ -39,7 +39,7 @@
         header="Unassigned teammates"
         button="Add teammate"
         placeholder="Name"
-        @addNew="onNewTeam" />
+        @addNew="onNewTeammate" />
 
 
       <div>
