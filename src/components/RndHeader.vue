@@ -1,0 +1,57 @@
+<template>
+      <header class="level">
+        <h2 class="title level-left">{{ header }}</h2>
+        <div class="level-right">
+          <div class="level-item">
+            <div class="field has-addons">
+              <p class="control">
+                <input
+                  class="input"
+                  type="text"
+                  :placeholder="placeholder"
+                  v-model="newName"
+                  id="name"
+                  name="name"
+                  required
+                  minlength="1"
+                  size="15"
+                  @keypress.enter.stop.prevent="addNew"
+                />
+              </p>
+              <p class="control">
+                <button class="button" @click.stop.prevent="addNew">
+                  {{ button }}
+                </button>
+              </p>
+            </div>
+          </div>
+        </div>
+      </header>
+
+</template>
+
+<script lang="ts">
+import { Component, Prop, Vue } from "vue-property-decorator";
+
+@Component({
+  model: {
+    prop: "name",
+    event: "nameChange",
+  },
+})
+export default class RndHeader extends Vue {
+  @Prop() private header!: string;
+  @Prop() private button!: string;
+  @Prop() private placeholder!: string;
+  
+  private newName = '';
+
+  addNew(): void {
+    if(!this.newName.length)
+      return;
+
+    this.$emit("addNew", this.newName);
+    this.newName = '';
+  }
+}
+</script>

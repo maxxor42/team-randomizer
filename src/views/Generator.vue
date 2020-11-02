@@ -1,36 +1,11 @@
 <template>
   <main class="p-4">
     <section class="container">
-      <header class="level">
-        <h2 class="title level-left">Teams</h2>
-        <div class="level-right">
-          <div class="level-item">
-            <div class="field has-addons">
-              <p class="control">
-                <input
-                  class="input"
-                  type="text"
-                  placeholder="Team Name"
-                  v-model="newTeamName"
-                  id="name"
-                  name="name"
-                  required
-                  minlength="1"
-                  size="15"
-                  @keypress.enter.stop.prevent="onNewTeam"
-                />
-              </p>
-              <p class="control">
-                <button class="button" @click.stop.prevent="onNewTeam">
-                  Add
-                </button>
-              </p>
-            </div>
-          </div>
-        </div>
-      </header>
-
-
+      <RndHeader 
+        header="Teams"
+        button="Add team"
+        placeholder="Team name"
+        @addNew="onNewTeam" />
 
       <RndTeam
         v-for="(team, index) in teams"
@@ -60,34 +35,12 @@
     </section>
 
     <section class="container mt-6">
-            <header class="level">
-        <h2 class="title level-left">Unassigned teammates</h2>
-        <div class="level-right">
-          <div class="level-item">
-            <div class="field has-addons">
-              <p class="control">
-                <input
-                  class="input"
-                  type="text"
-                  placeholder="Name"
-                  v-model="newTeammateName"
-                  id="name"
-                  name="name"
-                  required
-                  minlength="1"
-                  size="15"
-                  @keypress.enter.stop.prevent="onNewTeammate"
-                />
-              </p>
-              <p class="control">
-                <button class="button" @click.stop.prevent="onNewTeammate">
-                  Add
-                </button>
-              </p>
-            </div>
-          </div>
-        </div>
-      </header>
+      <RndHeader 
+        header="Unassigned teammates"
+        button="Add teammate"
+        placeholder="Name"
+        @addNew="onNewTeam" />
+
 
       <div>
         <draggable
@@ -117,6 +70,7 @@ import { Component, Mixins, Watch } from "vue-property-decorator";
 import draggable from "vuedraggable";
 import RndTeammate from "../components/RndTeammate.vue";
 import RndTeam from "../components/RndTeam.vue";
+import RndHeader from "../components/RndHeader.vue";
 import GroupMixin from "../mixins/group-mixin";
 
 @Component({
@@ -124,20 +78,18 @@ import GroupMixin from "../mixins/group-mixin";
     draggable,
     RndTeammate,
     RndTeam,
+    RndHeader,
   },
 })
 export default class Generator extends Mixins(GroupMixin) {
-  newTeamName = "";
-  newTeammateName = "";
 
-  onNewTeammate(): void {
-    if (this.newTeammateName) this.addTeammate(this.newTeammateName);
-    this.newTeammateName = "";
+
+  onNewTeammate(name: string): void {
+    this.addTeammate(name);
   }
 
-  onNewTeam(): void {
-    if (this.newTeamName) this.addTeam(this.newTeamName);
-    this.newTeamName = "";
+  onNewTeam(teamName: string): void {
+    this.addTeam(teamName);
   }
 
   onRemoveTeam(index: number): void {
