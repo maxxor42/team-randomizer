@@ -39,8 +39,7 @@
         header="Unassigned teammates"
         button="Add teammate"
         placeholder="Name"
-        @addNew="onNewTeammate" />
-
+        @addNew="onNewTeammate" />‘
 
       <div>
         <draggable
@@ -82,7 +81,6 @@ import GroupMixin from "../mixins/group-mixin";
   },
 })
 export default class Generator extends Mixins(GroupMixin) {
-
 
   onNewTeammate(name: string): void {
     this.addTeammate(name);
