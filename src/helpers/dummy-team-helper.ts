@@ -1,4 +1,4 @@
-import { Teammate } from "../models/teammate"
+import { Teammate } from '../models/teammate'
 import { Team } from '../models/team'
 
 export const dummyGroups: Team[] = [
