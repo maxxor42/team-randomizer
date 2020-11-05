@@ -2,7 +2,7 @@ import { Teammate } from "../models/teammate";
 import { Team } from "../models/team";
 import { Component, Vue } from 'vue-property-decorator';
 import { randomizeTeammates, filterLocked, filterUnlocked} from '../helpers/random-group-helper';
-import { dummyGroups, dummyBench } from '../helpers/dummy-team-helper';
+import { dummyTeams, dummyBench } from '../helpers/dummy-team-helper';
 
 @Component
 export default class GroupMixin extends Vue {
@@ -51,7 +51,7 @@ export default class GroupMixin extends Vue {
 
         this.teams = teams 
             ? JSON.parse(teams)
-            : dummyGroups;
+            : dummyTeams;
 
         this.bench = bench
             ? JSON.parse(bench)

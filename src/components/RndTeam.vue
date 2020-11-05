@@ -1,7 +1,7 @@
 <template>
-  <section class="box has-background-primary-dark">
+  <section class="box has-background-primary-dark movable">
     <header class="level">
-      <h2 class="title level-left"
+      <h2 class="title level-left editable"
       contenteditable="true"
       ref="header"
       @blur="onNameChange"
@@ -45,5 +45,7 @@ export default class RndTeam extends Vue {
 </script>
 
 <style scoped lang="scss">
-
+.editable {
+  cursor: text;
+}
 </style>

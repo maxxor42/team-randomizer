@@ -43,9 +43,3 @@ export default class RndTeammate extends Vue {
   }
 }
 </script>
-
-<style scoped lang="scss">
-  .movable {
-    cursor: move;
-  }
-</style>
