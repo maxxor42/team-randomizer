@@ -3,7 +3,7 @@
     <div class="tags are-large has-addons">
       <span class="tag is-primary movable">
         {{ teammate.name }}
-        <button @click="remove" class="delete ml-4"></button>
+        <button @click="remove" aria-label="remove" class="delete ml-4"></button>
       </span>
       <button v-if="teammate.locked" @click="toggleLocked(false)" class="button tag is-dark">unlock</button>
       <button v-else @click="toggleLocked(true)" class="button tag is-light">lock</button>

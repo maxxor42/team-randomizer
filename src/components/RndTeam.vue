@@ -1,7 +1,10 @@
 <template>
   <section class="box has-background-primary-dark">
     <header class="level">
-      <h2 class="title level-left" contenteditable="true" @blur="onNameChange">
+      <h2 class="title level-left"
+      contenteditable="true" 
+      @blur="onNameChange"
+      @keydown.enter.stop.prevent="onNameChange">
         {{ name }}
       </h2>
       <div class="level-right">
