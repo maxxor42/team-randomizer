@@ -1,12 +1,12 @@
 import { Teammate } from "../models/teammate";
-import { Group } from "../models/group";
+import { Team } from "../models/team";
 import { Component, Vue } from 'vue-property-decorator';
 import { randomizeTeammates, filterLocked, filterUnlocked} from '../helpers/random-group-helper';
 import { dummyGroups, dummyBench } from '../helpers/dummy-team-helper';
 
 @Component
 export default class GroupMixin extends Vue {
-    teams: Group[] = []
+    teams: Team[] = []
     bench: Teammate[] = [];
 
 
@@ -68,7 +68,7 @@ export default class GroupMixin extends Vue {
         if (!this.teams.length)
             return;
 
-        this.teams.forEach((team: Group) => {
+        this.teams.forEach((team: Team) => {
             teammatesToRandomize = teammatesToRandomize
                 .concat(filterUnlocked(team.members));
 
@@ -90,7 +90,7 @@ export default class GroupMixin extends Vue {
 
         randomizedTeammates = randomizeTeammates(teammatesToRandomize);
 
-        this.teams.forEach((team: Group) => {
+        this.teams.forEach((team: Team) => {
             let nrMembersNeaded = membersPerTeam - team.members.length;
 
             if (remainder) {

@@ -1,6 +1,6 @@
 import { Teammate } from './teammate';
 
-export interface Group {
+export interface Team {
   name: string;
   members: Teammate[];
 }

@@ -33,8 +33,8 @@
           />
         </draggable>
       </RndTeam>
-              <div v-if="!teams.length" class="notification">
-          <p>No unassigned teammembers</p>
+        <div v-if="!teams.length" class="notification">
+          <p>No teams</p>
         </div>
     </section>
 
