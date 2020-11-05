@@ -1,7 +1,7 @@
-import { Teammate } from "../models/teammate";
-import { Group } from '../models/group';
+import { Teammate } from "../models/teammate"
+import { Team } from '../models/team'
 
-export const dummyGroups: Group[] = [
+export const dummyGroups: Team[] = [
     {
         name: "Team z",
         members: [
