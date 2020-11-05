@@ -1,6 +1,6 @@
 <template>
       <header class="level">
-        <h2 class="title level-left">{{ header }}</h2>
+        <component :is="tag" class="title level-left">{{ header }}</component>
         <div class="level-right">
           <div class="level-item">
             <div class="field has-addons">
@@ -10,7 +10,6 @@
                   type="text"
                   :placeholder="placeholder"
                   v-model="newName"
-                  id="name"
                   name="name"
                   required
                   minlength="1"
@@ -24,6 +23,7 @@
                 </button>
               </p>
             </div>
+              <slot />
           </div>
         </div>
       </header>
@@ -41,6 +41,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 })
 export default class RndHeader extends Vue {
   @Prop() private header!: string;
+  @Prop() private tag!: 'h1' | 'h2';
   @Prop() private button!: string;
   @Prop() private placeholder!: string;
   

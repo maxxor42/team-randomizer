@@ -1,9 +1,9 @@
 <template>
   <section class="box has-background-primary-dark">
     <header class="level">
-      <h3 class="title level-left" contenteditable="true" @blur="onNameChange">
+      <h2 class="title level-left" contenteditable="true" @blur="onNameChange">
         {{ name }}
-      </h3>
+      </h2>
       <div class="level-right">
       <button class="button" @click="onRemove">Remove team</button>
       </div>

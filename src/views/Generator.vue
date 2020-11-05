@@ -2,10 +2,15 @@
   <main class="p-4">
     <section class="container">
       <RndHeader 
-        header="Teams"
+        header="Team randomizer"
+        tag="h1"
         button="Add team"
         placeholder="Team name"
-        @addNew="onNewTeam" />
+        @addNew="onNewTeam">
+          <div class="field ml-3">
+              <button @click="randomize" class="button is-danger is-large is-fullwidth">Randomize</button>
+          </div>
+      </RndHeader>
 
       <RndTeam
         v-for="(team, index) in teams"
@@ -28,19 +33,18 @@
           />
         </draggable>
       </RndTeam>
-    </section>
-
-    <section  class="container mt-6">
-      <button @click="randomize" class="button is-danger is-large is-fullwidth">Randomize</button>
+              <div v-if="!teams.length" class="notification">
+          <p>No unassigned teammembers</p>
+        </div>
     </section>
 
     <section class="container mt-6">
       <RndHeader 
         header="Unassigned teammates"
+        tag="h2"
         button="Add teammate"
         placeholder="Name"
-        @addNew="onNewTeammate" />‘
-
+        @addNew="onNewTeammate" />
       <div>
         <draggable
           v-model="bench"
