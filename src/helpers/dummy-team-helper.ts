@@ -1,7 +1,7 @@
 import { Teammate } from '../models/teammate'
 import { Team } from '../models/team'
 
-export const dummyGroups: Team[] = [
+export const dummyTeams: Team[] = [
     {
         name: "Team z",
         members: [
