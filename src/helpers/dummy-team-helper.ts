@@ -21,6 +21,6 @@ export const dummyTeams: Team[] = [
 ];
 
 export const dummyBench: Teammate[] = [
-    { name: "Bright", locked: false },
+    { name: "Bright", locked: true },
     { name: "Dark", locked: false },
 ];
