@@ -2,7 +2,8 @@
   <section class="box has-background-primary-dark">
     <header class="level">
       <h2 class="title level-left"
-      contenteditable="true" 
+      contenteditable="true"
+      ref="header"
       @blur="onNameChange"
       @keydown.enter.stop.prevent="onNameChange">
         {{ name }}
@@ -27,9 +28,14 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 export default class RndTeam extends Vue {
   @Prop() private name!: string;
 
+  get headerElement(): HTMLElement {
+    return this.$refs.header as HTMLElement;
+  }
+
   onNameChange(event: InputEvent): void {
-    // eslint-disable-next-line
-    this.$emit("nameChange", (event.target as any).innerHTML);
+    this.$emit("nameChange", this.headerElement.textContent);
+    if (this.headerElement === document.activeElement)
+      this.headerElement.blur();
   }
 
   onRemove() {
