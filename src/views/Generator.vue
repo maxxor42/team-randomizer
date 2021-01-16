@@ -2,11 +2,11 @@
   <main class="p-4">
     <section class="container">
       <RndHeader
-        header="Team randomizer"
+        header="Team Randomizer"
         tag="h1"
-        submitButton="Add team"
-        clearButton="Clear teams"
-        placeholder="Team name"
+        submitButton="Add Team"
+        clearButton="Clear Teams"
+        placeholder="Team Name"
         @addNew="onNewTeam"
         @clear="onRemoveAllTeams"
       >
@@ -50,8 +50,8 @@
       <RndHeader
         header="Unassigned teammates"
         tag="h2"
-        submitButton="Add teammate"
-        clearButton="Unassign all"
+        submitButton="Add Teammate"
+        clearButton="Unassign All"
         placeholder="Name"
         @addNew="onNewTeammate"
         @clear="onUnassignAllTeammates"
