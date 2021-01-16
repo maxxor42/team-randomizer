@@ -4,9 +4,11 @@
       <RndHeader
         header="Team randomizer"
         tag="h1"
-        button="Add team"
+        submitButton="Add team"
+        clearButton="Clear teams"
         placeholder="Team name"
         @addNew="onNewTeam"
+        @clear="onRemoveAllTeams"
       >
         <div class="field ml-3">
           <button
@@ -17,7 +19,7 @@
           </button>
         </div>
       </RndHeader>
-      
+
       <draggable v-model="teams" group="teams">
         <RndTeam
           v-for="(team, index) in teams"
@@ -48,9 +50,11 @@
       <RndHeader
         header="Unassigned teammates"
         tag="h2"
-        button="Add teammate"
+        submitButton="Add teammate"
+        clearButton="Unassign all"
         placeholder="Name"
         @addNew="onNewTeammate"
+        @clear="onUnassignAllTeammates"
       />
       <draggable
         v-model="bench"
@@ -100,12 +104,20 @@ export default class Generator extends Mixins(GroupMixin) {
     this.removeTeam(index);
   }
 
+  onRemoveAllTeams(): void {
+    this.removeAllTeams();
+  }
+
   onRemoveTeammateFromTeam(team: number, teamate: number) {
     this.removeTeammateFromTeam(team, teamate);
   }
 
   onRemoveTeammateFromBench(index: number) {
     this.removeTeammateFromBench(index);
+  }
+
+  onUnassignAllTeammates() {
+    this.unassignAllTeammates();
   }
 
   @Watch("teams", { deep: true })

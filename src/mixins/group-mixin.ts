@@ -24,9 +24,28 @@ export default class GroupMixin extends Vue {
         });
     }
 
+    unassignAllTeammates() {
+        this.teams.forEach((team: Team) => {
+            team.members.forEach((teammate: Teammate) => teammate.locked = false);
+            this.bench = this.bench.concat(team.members);
+            team.members = [];
+        });
+    }
+
     removeTeam(index: number) {
+        this.teams[index].members
+            .forEach((teammate: Teammate) => teammate.locked = false);
+        
         this.bench = this.bench.concat(this.teams[index].members);
         this.teams.splice(index, 1);
+    }
+
+    removeAllTeams() {
+        this.teams.forEach((team: Team) => {
+            team.members.forEach((teammate: Teammate) => teammate.locked = false);
+            this.bench = this.bench.concat(team.members);
+        });
+        this.teams = [];
     }
 
     removeTeammateFromTeam(teamIndex: number, teammateIndex: number) {
